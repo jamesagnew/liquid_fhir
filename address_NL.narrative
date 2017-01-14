@@ -1,0 +1,6 @@
+{% for line in address.line %}
+  {% line %}<br/>
+{% endfor %}
+{%- address.postalCode -%}
+{%- address.city -%}<br/>
+{% address.country %}

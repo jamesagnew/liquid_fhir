@@ -1,0 +1,15 @@
+
+{% if humanname.text.empty() = false %}
+  {{ humanname.text }}
+{% else %}
+  {% for prefix in humanname.prefix %}
+    {{ prefix }}
+  {% endfor %}
+  {{ humanname.family }},
+  {% for given in (humanname.given) | capitalize %}
+    {{ given }}
+  {% endfor %}
+  {% for suffix in humanname.suffix %}
+    {{ suffix }}
+  {% endfor %}
+{% endif %}

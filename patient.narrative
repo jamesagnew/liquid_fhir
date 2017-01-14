@@ -1,0 +1,65 @@
+
+<div>
+
+	{% assign firstName = Patient.name.where(use='official') | Patient.name %}
+	{% if firstName.empty() = false %}
+		<h1>
+			{% template(humanname, firstName[0]) %}
+		</h1>
+	{% endif %}
+
+	<table>
+		<tr>
+			<td>Identifier</td>
+			<td>
+					<ul>
+						{% for identifier in Patient.identifier %}
+							<li>
+								{% identifier.value %} ({{ identifier.system }})
+							</li>
+						{% endfor %}
+				</ul>
+			</td>
+		</tr>
+		{% for nextAddress in Patient.address %}
+		<tr>
+			<td>Address ({{ nextAddress.use }})</td>
+			<td>
+				{% template(address, nextAddress) %}
+			</td>
+		</tr>
+		{% endfor %}
+
+		{% if Patient.deceasedDateTime.count() > 0 %}
+		<tr>
+			<td colspan="2">Deceased ({{ Patient.deceasedDateTime }})</td>
+		</tr>
+		{% elsif Patient.deceasedBoolean.anyTrue() %}
+		<tr>
+			<td colspan="2">Deceased</td>
+		</tr>
+		{% endif %}
+	</table>
+
+	<h1>Contact Information</h1>
+	{% for contact in Patient.contact %}
+
+		<!-- Relationship -->
+		{% for relationship in contact.relationship %}
+			{% if relationship.text.empty() = false %}
+				{{ contact.relationship.text }}
+			{% elsif relationship.coding.display.empty() = false %}
+				{{ contact.relationship.coding.display }}
+			{% elsif relationship.coding.code.empty() = false %}
+				{{ contact.relationship.coding.code }}
+			{% endif %}
+		{% endfor %}
+
+		<!-- Name -->
+		{% if contact.name.empty() = false %}
+			{% template(humanname, contact.name) %}
+		{% endif %}
+
+	{% endfor %}
+
+</div>
