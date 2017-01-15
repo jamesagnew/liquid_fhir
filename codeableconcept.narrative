@@ -1,0 +1,7 @@
+  {% if codeableconcept.text.empty() = false %}
+    {{ codeableconcept.text }}
+  {% elsif codeableconcept.coding[0].display.empty() = false %}
+    {{ codeableconcept.coding.display }}
+  {% elsif codeableconcept.coding[0].code.empty() = false %}
+    {{ codeableconcept.coding[0].code }}
+  {% endif %}

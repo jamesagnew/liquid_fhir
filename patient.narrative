@@ -21,6 +21,14 @@
 				</ul>
 			</td>
 		</tr>
+
+		<tr>
+			<td>Gender</td>
+			<td>
+				{% Patient.gender %}
+			</td>
+		</tr>
+
 		{% for nextAddress in Patient.address %}
 		<tr>
 			<td>Address ({{ nextAddress.use }})</td>
@@ -29,6 +37,22 @@
 			</td>
 		</tr>
 		{% endfor %}
+
+		<tr>
+			<td>Contact</td>
+			<td>
+				{% for nextTelecom in Patient.telecom %}
+					{% template(contactpoint, nextTelecom) %}<br/>
+				{% endfor %}
+			</td>
+		</tr>
+
+		<tr>
+			<td>General Practitioner</td>
+			<td>
+				{% template(reference, Patient.generalPractitioner) %}
+			</td>
+		</tr>
 
 		{% if Patient.deceasedDateTime.count() > 0 %}
 		<tr>
@@ -46,18 +70,30 @@
 
 		<!-- Relationship -->
 		{% for relationship in contact.relationship %}
-			{% if relationship.text.empty() = false %}
-				{{ contact.relationship.text }}
-			{% elsif relationship.coding.display.empty() = false %}
-				{{ contact.relationship.coding.display }}
-			{% elsif relationship.coding.code.empty() = false %}
-				{{ contact.relationship.coding.code }}
-			{% endif %}
+			{% template(codeableconcept, relationship) %}
 		{% endfor %}
+
+		<br/>
 
 		<!-- Name -->
 		{% if contact.name.empty() = false %}
 			{% template(humanname, contact.name) %}
+		{% endif %}
+
+		<br/>
+
+		{% for nextTelecom in contact.telecom %}
+			{% template(contactpoint, nextTelecom) %}<br/>
+		{% endfor %}
+
+		<br/>
+
+		{% if contact.address.empty() = false %}
+			{% template(address, contact.address) %}<br/>
+		{% endif %}
+
+		{% if contact.gender = false %}
+			{{ contact.gender }}
 		{% endif %}
 
 	{% endfor %}
