@@ -15,7 +15,7 @@
 					<ul>
 						{% for identifier in Patient.identifier %}
 							<li>
-								{% identifier.value %} ({{ identifier.system }})
+								{{ identifier.value }} ({{ identifier.system }})
 							</li>
 						{% endfor %}
 				</ul>
@@ -25,7 +25,7 @@
 		<tr>
 			<td>Gender</td>
 			<td>
-				{% Patient.gender %}
+				{{ Patient.gender }}
 			</td>
 		</tr>
 
